@@ -1,4 +1,4 @@
-package model.entity;
+package carrotauction.com.carrotauction.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -20,29 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-
+public class ItemBuyer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String uid;
-
-    private String upw;
-
-    private String location;
-
-    private String nickname;
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> upload_item;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> bid_item;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> favorite_item;
+    private Long price;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -55,5 +38,4 @@ public class User {
 
     @LastModifiedBy
     private String updatedBy;
-
 }

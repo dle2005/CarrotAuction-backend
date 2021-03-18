@@ -1,4 +1,4 @@
-package model.entity;
+package carrotauction.com.carrotauction.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,19 +19,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
-public class Category {
+public class AvgPrice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String category;
-
-    private String buy_year;
-
-    private String buy_price;
-
-    private String status;
+    private Long price;
 
     @CreatedDate
     private LocalDateTime createdAt;

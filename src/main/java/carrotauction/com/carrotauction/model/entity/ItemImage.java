@@ -1,4 +1,4 @@
-package model.entity;
+package carrotauction.com.carrotauction.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

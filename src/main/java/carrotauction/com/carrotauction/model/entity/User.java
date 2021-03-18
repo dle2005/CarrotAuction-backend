@@ -1,4 +1,4 @@
-package model.entity;
+package carrotauction.com.carrotauction.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,17 +19,29 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
-public class Alarm {
+public class User {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String uid;
 
-    private String description;
+    private String upw;
 
-    private String status;
+    private String location;
+
+    private String nickname;
+
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+//    private List<Item> upload_item;
+//
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+//    private List<Item> bid_item;
+//
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+//    private List<Item> favorite_item;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -42,4 +54,5 @@ public class Alarm {
 
     @LastModifiedBy
     private String updatedBy;
+
 }

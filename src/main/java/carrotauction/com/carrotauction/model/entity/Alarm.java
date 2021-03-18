@@ -1,10 +1,9 @@
-package model.entity;
+package carrotauction.com.carrotauction.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
-public class Item {
+public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +29,7 @@ public class Item {
 
     private String description;
 
-    private Long start_price;
-
-    private LocalDateTime duration;
+    private String status;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -45,5 +42,4 @@ public class Item {
 
     @LastModifiedBy
     private String updatedBy;
-
 }
