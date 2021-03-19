@@ -31,7 +31,7 @@ public class Category {
 
     private String buy_year;
 
-    private String buy_price;
+    private Long buy_price;
 
     private String status;
 
