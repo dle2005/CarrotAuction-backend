@@ -35,6 +35,12 @@ public class Item {
 
     private LocalDateTime duration;
 
+    private Long categoryId;
+
+    private Long itemImageId;
+
+    private Long userId;
+
     @CreatedDate
     private LocalDateTime createdAt;
 

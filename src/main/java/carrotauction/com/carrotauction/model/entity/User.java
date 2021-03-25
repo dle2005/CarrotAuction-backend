@@ -28,22 +28,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String uid;
+    private String user_id;
 
-    private String upw;
+    private String user_pw;
 
     private String location;
 
     private String nickname;
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> upload_item;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> bid_item;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<Item> favorite_item;
 
     @CreatedDate
     private LocalDateTime createdAt;

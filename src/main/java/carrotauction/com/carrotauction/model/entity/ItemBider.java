@@ -21,13 +21,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
-public class ItemBuyer {
+public class ItemBider {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long price;
+
+    private Long userId;
+
+    private Long itemId;
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -13,9 +13,9 @@ public class UserApiResponse {
 
     private Long id;
 
-    private String uid;
+    private String user_id;
 
-    private String upw;
+    private String user_pw;
 
     private String location;
 

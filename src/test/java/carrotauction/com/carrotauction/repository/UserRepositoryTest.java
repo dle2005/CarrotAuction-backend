@@ -14,8 +14,8 @@ class UserRepositoryTest {
     @Test
     public void create() {
         User user = User.builder()
-                .uid("Test01")
-                .upw("Test01")
+                .user_id("Test01")
+                .user_pw("Test01")
                 .location("서울특별시")
                 .nickname("도네왕")
                 .build();

@@ -16,8 +16,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         UserApiRequest userApiRequest = request.getData();
 
         User user = User.builder()
-                .uid(userApiRequest.getUid())
-                .upw(userApiRequest.getUpw())
+                .user_id(userApiRequest.getUser_id())
+                .user_pw(userApiRequest.getUser_pw())
                 .location(userApiRequest.getLocation())
                 .nickname(userApiRequest.getNickname())
                 .build();
@@ -48,8 +48,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     private Header<UserApiResponse> response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
                 .id(user.getId())
-                .uid(user.getUid())
-                .upw(user.getUpw())
+                .user_id(user.getUser_id())
+                .user_pw(user.getUser_pw())
                 .location(user.getLocation())
                 .nickname(user.getNickname())
                 .build();
