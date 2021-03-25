@@ -1,4 +1,4 @@
-package carrotauction.com.carrotauction.network.request;
+package carrotauction.com.carrotauction.network.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ItemApiRequest {
+public class ItemApiResponse {
 
     private Long id;
 

@@ -1,4 +1,4 @@
-package carrotauction.com.carrotauction.network.request;
+package carrotauction.com.carrotauction.network.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FavoriteItemApiRequest {
+public class FavoriteItemApiResponse {
 
     private Long id;
 
