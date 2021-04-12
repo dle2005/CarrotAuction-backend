@@ -10,6 +10,7 @@ import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
 import carrotauction.com.carrotauction.network.response.UserApiResponse;
 import carrotauction.com.carrotauction.network.response.UserItemBiderApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Autowired
     private ItemApiLogicService itemApiLogicService;
+
+    @Override
+    public Header<List<UserApiResponse>> search(Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {

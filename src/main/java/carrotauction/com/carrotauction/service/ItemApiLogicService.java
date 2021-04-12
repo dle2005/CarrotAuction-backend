@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
-
     @Override
     public Header<List<ItemApiResponse>> search(Pageable pageable) {
         Page<Item> items = baseRepository.findAll(pageable);

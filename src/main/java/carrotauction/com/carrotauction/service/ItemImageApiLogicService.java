@@ -2,15 +2,21 @@ package carrotauction.com.carrotauction.service;
 
 import carrotauction.com.carrotauction.model.entity.ItemImage;
 import carrotauction.com.carrotauction.network.Header;
-import carrotauction.com.carrotauction.network.request.ItemApiRequest;
 import carrotauction.com.carrotauction.network.request.ItemImageApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemImageApiResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ItemImageApiLogicService extends BaseService<ItemImageApiRequest, ItemImageApiResponse, ItemImage> {
+
+    @Override
+    public Header<List<ItemImageApiResponse>> search(Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Header<ItemImageApiResponse> create(Header<ItemImageApiRequest> request) {

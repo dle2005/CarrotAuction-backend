@@ -3,14 +3,20 @@ package carrotauction.com.carrotauction.service;
 import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.ItemBiderApiRequest;
-import carrotauction.com.carrotauction.network.response.ItemApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, ItemBiderApiResponse, ItemBider> {
+
+    @Override
+    public Header<List<ItemBiderApiResponse>> search(Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Header<ItemBiderApiResponse> create(Header<ItemBiderApiRequest> request) {
