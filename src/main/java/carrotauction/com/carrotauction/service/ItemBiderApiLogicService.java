@@ -4,6 +4,9 @@ import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.ItemBiderApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
+import carrotauction.com.carrotauction.repository.ItemRepository;
+import carrotauction.com.carrotauction.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,12 @@ import java.util.Optional;
 
 @Service
 public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, ItemBiderApiResponse, ItemBider> {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     public Header<List<ItemBiderApiResponse>> search(Pageable pageable) {
@@ -24,8 +33,8 @@ public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, I
 
         ItemBider itemBider = ItemBider.builder()
                 .price(itemBiderApiRequest.getPrice())
-//                .user(itemBiderApiRequest.getUserId())
-//                .itemId(itemBiderApiRequest.getItemId())
+                .user(userRepository.getOne(itemBiderApiRequest.getUserId()))
+                .item(itemRepository.getOne(itemBiderApiRequest.getItemId()))
                 .build();
 
         ItemBider newItemBider = baseRepository.save(itemBider);

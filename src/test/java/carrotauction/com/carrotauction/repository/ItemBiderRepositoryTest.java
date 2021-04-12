@@ -22,7 +22,7 @@ class ItemBiderRepositoryTest {
         ItemBider itemBider = ItemBider.builder()
                 .price(20000L)
                 .user(userRepository.getOne(2L))
-                .item(itemRepository.getOne(1L))
+                .item(itemRepository.getOne(2L))
                 .build();
 
         itemBuyerRepository.save(itemBider);
