@@ -2,14 +2,38 @@ package carrotauction.com.carrotauction.service;
 
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.network.Header;
+import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
+
+
+    @Override
+    public Header<List<ItemApiResponse>> search(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(item -> response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
 
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
