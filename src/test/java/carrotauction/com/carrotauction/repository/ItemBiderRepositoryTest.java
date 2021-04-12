@@ -21,7 +21,7 @@ class ItemBiderRepositoryTest {
     public void create() {
         ItemBider itemBider = ItemBider.builder()
                 .price(20000L)
-                .user(userRepository.getOne(1L))
+                .user(userRepository.getOne(2L))
                 .item(itemRepository.getOne(1L))
                 .build();
 
