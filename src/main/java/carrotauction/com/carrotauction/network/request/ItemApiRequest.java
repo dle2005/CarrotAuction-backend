@@ -23,7 +23,13 @@ public class ItemApiRequest {
 
     private LocalDateTime duration;
 
-    private Long categoryId;
+    private String category;
+
+    private String buy_year;
+
+    private Long buy_price;
+
+    private String status;
 
     private Long itemImageId;
 
