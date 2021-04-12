@@ -4,6 +4,7 @@ import carrotauction.com.carrotauction.controller.CrudController;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
+import carrotauction.com.carrotauction.network.response.FavoriteItemApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
 import carrotauction.com.carrotauction.network.response.UserApiResponse;
 import carrotauction.com.carrotauction.network.response.UserItemBiderApiResponse;
@@ -36,4 +37,8 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiLogicService.searchItemBider(pageable, id);
     }
 
+    @GetMapping("/{id}/favoriteItem")
+    public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
+        return userApiLogicService.searchFavoriteItem(pageable, id);
+    }
 }

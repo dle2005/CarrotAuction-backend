@@ -1,15 +1,14 @@
 package carrotauction.com.carrotauction.service;
 
+import carrotauction.com.carrotauction.model.entity.FavoriteItem;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
-import carrotauction.com.carrotauction.network.response.ItemApiResponse;
-import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
-import carrotauction.com.carrotauction.network.response.UserApiResponse;
-import carrotauction.com.carrotauction.network.response.UserItemBiderApiResponse;
+import carrotauction.com.carrotauction.network.response.*;
+import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
 import carrotauction.com.carrotauction.repository.ItemBiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,7 +29,13 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     private ItemApiLogicService itemApiLogicService;
 
     @Autowired
+    private FavoriteItemApiLogicService favoriteItemApiLogicService;
+
+    @Autowired
     private ItemBiderRepository itemBiderRepository;
+
+    @Autowired
+    private FavoriteItemRepository favoriteItemRepository;
 
     @Override
     public Header<List<UserApiResponse>> search(Pageable pageable) {
@@ -133,5 +138,31 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
 
         return Header.OK(itemBiderApiResponseList, pagination);
+    }
+
+    public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(Pageable pageable, Long id) {
+        User user = baseRepository.getOne(id);
+
+        Page<FavoriteItem> favoriteItems = favoriteItemRepository.findAll(pageable);
+        List<FavoriteItemApiResponse> favoriteItemApiResponsesList = favoriteItems.stream()
+                .filter(favoriteItem -> favoriteItem.getUser().equals(user))
+                .map(favoriteItem -> {
+                    FavoriteItemApiResponse favoriteItemApiResponse = favoriteItemApiLogicService.response(favoriteItem).getData();
+                    Item item = favoriteItem.getItem();
+                    ItemApiResponse itemApiResponse = itemApiLogicService.response(item).getData();
+
+                    favoriteItemApiResponse.setItemApiResponse(itemApiResponse);
+                    return favoriteItemApiResponse;
+                })
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(favoriteItems.getTotalPages())
+                .totalElements(favoriteItems.getTotalElements())
+                .currentPage(favoriteItems.getNumber())
+                .currentElements(favoriteItems.getNumberOfElements())
+                .build();
+
+        return Header.OK(favoriteItemApiResponsesList, pagination);
     }
 }

@@ -11,12 +11,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class FavoriteItemRepositoryTest {
 
     @Autowired
-    private  FavoriteItemRepository favoriteItemRepository;
+    private FavoriteItemRepository favoriteItemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Test
     public void create() {
         FavoriteItem favoriteItem = FavoriteItem.builder()
-
+                .user(userRepository.getOne(1L))
+                .item(itemRepository.getOne(2L))
                 .build();
+
+        favoriteItemRepository.save(favoriteItem);
     }
 }
