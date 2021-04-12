@@ -1,15 +1,29 @@
 package carrotauction.com.carrotauction.service;
 
+import carrotauction.com.carrotauction.model.entity.Item;
+import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
+import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
 import carrotauction.com.carrotauction.network.response.UserApiResponse;
+import carrotauction.com.carrotauction.network.response.UserItemBiderApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse, User> {
+
+    @Autowired
+    private ItemBiderApiLogicService itemBiderApiLogicService;
+
+    @Autowired
+    private ItemApiLogicService itemApiLogicService;
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
@@ -55,5 +69,30 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .build();
 
         return Header.OK(userApiResponse);
+    }
+
+    public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
+        User user = baseRepository.getOne(id);
+        UserApiResponse userApiResponse = response(user).getData();
+
+        List<ItemBider> itemBiderList = user.getItemBiderList();
+        List<ItemBiderApiResponse> itemBiderApiResponseList = itemBiderList.stream()
+                .map(itemBider -> {
+                    ItemBiderApiResponse itemBiderApiResponse = itemBiderApiLogicService.response(itemBider).getData();
+                    Item item = itemBider.getItem();
+                    ItemApiResponse itemApiResponse = itemApiLogicService.response(item).getData();
+
+                    itemBiderApiResponse.setItemApiResponse(itemApiResponse);
+                    return itemBiderApiResponse;
+                })
+                .collect(Collectors.toList());
+
+        userApiResponse.setItemBiderApiResponseList(itemBiderApiResponseList);
+
+        UserItemBiderApiResponse userItemBiderApiResponse = UserItemBiderApiResponse.builder()
+                .userApiResponse(userApiResponse)
+                .build();
+
+        return Header.OK(userItemBiderApiResponse);
     }
 }

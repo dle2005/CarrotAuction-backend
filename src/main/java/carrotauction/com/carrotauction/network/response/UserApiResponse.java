@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,6 @@ public class UserApiResponse {
     private String location;
 
     private String nickname;
+
+    private List<ItemBiderApiResponse> itemBiderApiResponseList;
 }

@@ -16,7 +16,7 @@ public class FavoriteItemApiService extends BaseService<FavoriteItemApiRequest, 
         FavoriteItemApiRequest favoriteItemApiRequest = request.getData();
 
         FavoriteItem favoriteItem = FavoriteItem.builder()
-                .user(favoriteItemApiRequest.getUser())
+//                .user(favoriteItemApiRequest.getUser())
                 .item(favoriteItemApiRequest.getItem())
                 .build();
 
@@ -46,7 +46,7 @@ public class FavoriteItemApiService extends BaseService<FavoriteItemApiRequest, 
     private Header<FavoriteItemApiResponse> response(FavoriteItem favoriteItem) {
         FavoriteItemApiResponse favoriteItemApiResponse = FavoriteItemApiResponse.builder()
                 .id(favoriteItem.getId())
-                .user(favoriteItem.getUser())
+//                .user(favoriteItem.getUser())
                 .item(favoriteItem.getItem())
                 .build();
 

@@ -1,9 +1,6 @@
 package carrotauction.com.carrotauction.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,9 +26,13 @@ public class ItemBider {
 
     private Long price;
 
-    private Long userId;
+    @ManyToOne
+    @ToString.Exclude
+    private User user;
 
-    private Long itemId;
+    @ManyToOne
+    @ToString.Exclude
+    private Item item;
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -18,8 +18,8 @@ public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, I
 
         ItemBider itemBider = ItemBider.builder()
                 .price(itemBiderApiRequest.getPrice())
-                .userId(itemBiderApiRequest.getUserId())
-                .itemId(itemBiderApiRequest.getItemId())
+//                .user(itemBiderApiRequest.getUserId())
+//                .itemId(itemBiderApiRequest.getItemId())
                 .build();
 
         ItemBider newItemBider = baseRepository.save(itemBider);
@@ -45,12 +45,12 @@ public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, I
         return null;
     }
 
-    private Header<ItemBiderApiResponse> response(ItemBider itemBider) {
+    public Header<ItemBiderApiResponse> response(ItemBider itemBider) {
         ItemBiderApiResponse itemBiderApiResponse = ItemBiderApiResponse.builder()
-                .id(itemBider.getItemId())
+                .id(itemBider.getId())
                 .price(itemBider.getPrice())
-                .userId(itemBider.getUserId())
-                .itemId(itemBider.getItemId())
+                .userId(itemBider.getUser().getId())
+                .itemId(itemBider.getItem().getId())
                 .build();
 
         return Header.OK(itemBiderApiResponse);

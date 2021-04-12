@@ -11,10 +11,18 @@ class ItemBiderRepositoryTest {
     @Autowired
     private ItemBiderRepository itemBuyerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
+
     @Test
     public void create() {
         ItemBider itemBider = ItemBider.builder()
-                .price(10000L)
+                .price(20000L)
+                .user(userRepository.getOne(1L))
+                .item(itemRepository.getOne(1L))
                 .build();
 
         itemBuyerRepository.save(itemBider);
@@ -24,4 +32,5 @@ class ItemBiderRepositoryTest {
     public void read() {
         System.out.println(itemBuyerRepository.findAll());
     }
+
 }

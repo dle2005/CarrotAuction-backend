@@ -1,5 +1,6 @@
 package carrotauction.com.carrotauction.network.response;
 
+import carrotauction.com.carrotauction.model.entity.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,6 @@ public class ItemBiderApiResponse {
     private Long userId;
 
     private Long itemId;
+
+    private ItemApiResponse itemApiResponse;
 }
