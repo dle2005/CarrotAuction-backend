@@ -13,10 +13,14 @@ class ItemImageRepositoryTest {
     @Autowired
     private ItemImageRepository itemImageRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     @Test
     public void create() {
         ItemImage itemImage = ItemImage.builder()
                 .url("ItemImageTest01")
+                .item(itemRepository.getOne(1L))
                 .build();
 
         itemImageRepository.save(itemImage);

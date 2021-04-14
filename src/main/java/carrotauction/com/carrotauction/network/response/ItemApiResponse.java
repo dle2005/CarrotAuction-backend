@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class ItemApiResponse {
 
     private Long categoryId;
 
-    private Long itemImageId;
-
     private Long userId;
+
+    private List<ItemImageApiResponse> itemImageApiResponses;
 }

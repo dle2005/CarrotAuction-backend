@@ -38,12 +38,13 @@ public class Item {
 
     private Long categoryId;
 
-    private Long itemImageId;
-
     private Long userId;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<ItemBider> itemBiderList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private List<ItemImage> itemImages;
 
     @CreatedDate
     private LocalDateTime createdAt;

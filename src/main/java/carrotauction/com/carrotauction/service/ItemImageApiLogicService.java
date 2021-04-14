@@ -49,7 +49,7 @@ public class ItemImageApiLogicService extends BaseService<ItemImageApiRequest, I
         return null;
     }
 
-    private Header<ItemImageApiResponse> response(ItemImage itemImage) {
+    public Header<ItemImageApiResponse> response(ItemImage itemImage) {
         ItemImageApiResponse itemImageApiResponse = ItemImageApiResponse.builder()
                 .id(itemImage.getId())
                 .url(itemImage.getUrl())
