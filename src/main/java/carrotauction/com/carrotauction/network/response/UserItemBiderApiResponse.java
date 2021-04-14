@@ -9,13 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FavoriteItemApiResponse {
+public class UserItemBiderApiResponse {
 
-    private Long id;
+    private UserApiResponse userApiResponse;
 
-    private Long user;
-
-    private Long item;
-
-    private ItemApiResponse itemApiResponse;
 }

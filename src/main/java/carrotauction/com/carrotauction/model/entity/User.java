@@ -1,9 +1,6 @@
 package carrotauction.com.carrotauction.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,6 +33,12 @@ public class User {
     private String location;
 
     private String nickname;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<ItemBider> itemBiderList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<FavoriteItem> favoriteItemList;
 
     @CreatedDate
     private LocalDateTime createdAt;

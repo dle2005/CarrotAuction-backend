@@ -22,6 +22,7 @@ class ItemRepositoryTest {
                 .description("ItemTest01")
                 .start_price(10000L)
                 .duration(LocalDateTime.now().plusDays(1))
+                .categoryId(1L)
                 .build();
 
         itemRepository.save(item);

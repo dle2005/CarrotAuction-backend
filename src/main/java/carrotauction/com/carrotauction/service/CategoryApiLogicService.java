@@ -3,14 +3,26 @@ package carrotauction.com.carrotauction.service;
 import carrotauction.com.carrotauction.model.entity.Category;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.CategoryApiRequest;
-import carrotauction.com.carrotauction.network.response.AlarmApiResponse;
+import carrotauction.com.carrotauction.network.response.AvgPriceApiResponse;
 import carrotauction.com.carrotauction.network.response.CategoryApiResponse;
+import carrotauction.com.carrotauction.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryApiLogicService extends BaseService<CategoryApiRequest, CategoryApiResponse, Category> {
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Override
+    public Header<List<CategoryApiResponse>> search(Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Header<CategoryApiResponse> create(Header<CategoryApiRequest> request) {
@@ -56,5 +68,19 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
                 .build();
 
         return Header.OK(categoryApiResponse);
+    }
+
+    public Header<AvgPriceApiResponse> getAvgPrice(String category, String buy_year, Long buy_price, String status) {
+        List<Category> categories = categoryRepository.findAllByCategory(category);
+        categories.stream().filter(c -> c.getCategory().equals(category));
+        categories.stream().filter(c -> c.getBuy_year().equals(buy_year));
+        categories.stream().filter(c -> c.getBuy_price().equals(buy_price));
+
+
+        AvgPriceApiResponse avgPriceApiResponse = AvgPriceApiResponse.builder()
+                .price(categories.stream().count())
+                .build();
+
+        return Header.OK(avgPriceApiResponse);
     }
 }

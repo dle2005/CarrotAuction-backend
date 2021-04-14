@@ -18,7 +18,7 @@ class CategoryRepositoryTest {
         Category category = Category.builder()
                 .category("CategoryTest01")
                 .buy_year("2021")
-                .buy_price(10000L)
+                .buy_price(40000L)
                 .status("상")
                 .build();
 

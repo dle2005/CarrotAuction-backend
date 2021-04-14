@@ -4,14 +4,25 @@ import carrotauction.com.carrotauction.ifs.CrudInterface;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Component
 public abstract class CrudController<Req, Res, Entity> implements CrudInterface<Req, Res> {
 
     @Autowired(required = false)
     protected BaseService<Req, Res, Entity> baseService;
+
+    @Override
+    @GetMapping("")
+    public Header<List<Res>> search(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+        return baseService.search(pageable);
+    }
 
     @Override
     @PostMapping("")

@@ -1,15 +1,17 @@
 package carrotauction.com.carrotauction.repository;
 
-import carrotauction.com.carrotauction.model.entity.ItemBider;
+import carrotauction.com.carrotauction.model.entity.FavoriteItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
-class ItemBiderRepositoryTest {
+class FavoriteItemRepositoryTest {
 
     @Autowired
-    private ItemBiderRepository itemBuyerRepository;
+    private FavoriteItemRepository favoriteItemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -19,18 +21,11 @@ class ItemBiderRepositoryTest {
 
     @Test
     public void create() {
-        ItemBider itemBider = ItemBider.builder()
-                .price(20000L)
-                .user(userRepository.getOne(2L))
+        FavoriteItem favoriteItem = FavoriteItem.builder()
+                .user(userRepository.getOne(1L))
                 .item(itemRepository.getOne(2L))
                 .build();
 
-        itemBuyerRepository.save(itemBider);
+        favoriteItemRepository.save(favoriteItem);
     }
-
-    @Test
-    public void read() {
-        System.out.println(itemBuyerRepository.findAll());
-    }
-
 }

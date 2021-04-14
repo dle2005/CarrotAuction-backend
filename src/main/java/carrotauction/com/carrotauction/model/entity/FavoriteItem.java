@@ -24,9 +24,13 @@ public class FavoriteItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long user;
+    @ManyToOne
+    @ToString.Exclude
+    private User user;
 
-    private Long item;
+    @ManyToOne
+    @ToString.Exclude
+    private Item item;
 
     @CreatedDate
     private LocalDateTime createdAt;

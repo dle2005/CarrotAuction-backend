@@ -1,26 +1,63 @@
 package carrotauction.com.carrotauction.service;
 
+import carrotauction.com.carrotauction.model.entity.Category;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.network.Header;
+import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import carrotauction.com.carrotauction.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Override
+    public Header<List<ItemApiResponse>> search(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(item -> response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
+
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
         ItemApiRequest itemApiRequest = request.getData();
+
+        Category category = Category.builder()
+                .category(itemApiRequest.getCategory())
+                .buy_year(itemApiRequest.getBuy_year())
+                .buy_price(itemApiRequest.getBuy_price())
+                .build();
+
+        Category newCategory = categoryRepository.save(category);
 
         Item item = Item.builder()
                 .title(itemApiRequest.getTitle())
                 .description(itemApiRequest.getDescription())
                 .start_price(itemApiRequest.getStart_price())
                 .duration(itemApiRequest.getDuration())
-                .categoryId(itemApiRequest.getCategoryId())
+                .categoryId(newCategory.getId())
                 .itemImageId(itemApiRequest.getItemImageId())
                 .userId(itemApiRequest.getUserId())
                 .build();
@@ -48,7 +85,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
         return null;
     }
 
-    private Header<ItemApiResponse> response(Item item) {
+    public Header<ItemApiResponse> response(Item item) {
         ItemApiResponse itemApiResponse = ItemApiResponse.builder()
                 .id(item.getId())
                 .title(item.getTitle())

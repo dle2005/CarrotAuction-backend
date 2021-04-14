@@ -4,10 +4,17 @@ import carrotauction.com.carrotauction.model.entity.Alarm;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.AlarmApiRequest;
 import carrotauction.com.carrotauction.network.response.AlarmApiResponse;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AlarmApiLogicService extends BaseService<AlarmApiRequest, AlarmApiResponse, Alarm> {
+
+    @Override
+    public Header<List<AlarmApiResponse>> search(Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Header<AlarmApiResponse> create(Header<AlarmApiRequest> request) {
