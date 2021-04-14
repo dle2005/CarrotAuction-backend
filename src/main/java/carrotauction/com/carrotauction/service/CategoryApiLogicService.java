@@ -3,7 +3,6 @@ package carrotauction.com.carrotauction.service;
 import carrotauction.com.carrotauction.model.entity.Category;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.CategoryApiRequest;
-import carrotauction.com.carrotauction.network.response.AlarmApiResponse;
 import carrotauction.com.carrotauction.network.response.AvgPriceApiResponse;
 import carrotauction.com.carrotauction.network.response.CategoryApiResponse;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
