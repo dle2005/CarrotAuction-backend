@@ -10,6 +10,7 @@ import carrotauction.com.carrotauction.network.request.UserApiRequest;
 import carrotauction.com.carrotauction.network.response.*;
 import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
 import carrotauction.com.carrotauction.repository.ItemBiderRepository;
+import carrotauction.com.carrotauction.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,9 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Autowired
     private FavoriteItemRepository favoriteItemRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     public Header<List<UserApiResponse>> search(Pageable pageable) {
@@ -165,4 +169,30 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
         return Header.OK(favoriteItemApiResponsesList, pagination);
     }
+
+    public Header<List<ItemApiResponse>> searchMyItem(Pageable pageable, Long id) {
+        User user = baseRepository.getOne(id);
+
+        Page<Item> items = itemRepository.findAll(pageable);
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .filter(item -> item.getUserId().equals(user))
+                .map(item -> itemApiLogicService.response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
 }
+
+
+
+
+
+

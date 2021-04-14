@@ -4,10 +4,7 @@ import carrotauction.com.carrotauction.controller.CrudController;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
-import carrotauction.com.carrotauction.network.response.FavoriteItemApiResponse;
-import carrotauction.com.carrotauction.network.response.ItemBiderApiResponse;
-import carrotauction.com.carrotauction.network.response.UserApiResponse;
-import carrotauction.com.carrotauction.network.response.UserItemBiderApiResponse;
+import carrotauction.com.carrotauction.network.response.*;
 import carrotauction.com.carrotauction.service.UserApiLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -40,5 +37,10 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     @GetMapping("/{id}/favoriteItem")
     public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
         return userApiLogicService.searchFavoriteItem(pageable, id);
+    }
+
+    @GetMapping("/{id}/myItem")
+    public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
+        return userApiLogicService.searchMyItem(pageable, id);
     }
 }
