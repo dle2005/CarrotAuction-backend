@@ -61,6 +61,9 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
         Category newCategory = categoryRepository.save(category);
 
+        List<ItemImage> itemImages = itemApiRequest.getItemImages();
+        itemImages.stream().map(itemImage -> itemImageRepository.save(itemImage));
+
         Item item = Item.builder()
                 .title(itemApiRequest.getTitle())
                 .description(itemApiRequest.getDescription())
