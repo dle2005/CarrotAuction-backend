@@ -40,6 +40,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<FavoriteItem> favoriteItemList;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Alarm> alarmList;
+
     @CreatedDate
     private LocalDateTime createdAt;
 

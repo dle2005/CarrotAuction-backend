@@ -1,9 +1,6 @@
 package carrotauction.com.carrotauction.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,6 +29,12 @@ public class Alarm {
     private String description;
 
     private String status;
+
+    @ManyToOne
+    @ToString.Exclude
+    private User user;
+
+    private Long item_id;
 
     @CreatedDate
     private LocalDateTime createdAt;

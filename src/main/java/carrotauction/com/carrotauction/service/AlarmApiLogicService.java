@@ -1,19 +1,54 @@
 package carrotauction.com.carrotauction.service;
 
 import carrotauction.com.carrotauction.model.entity.Alarm;
+import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
+import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.AlarmApiRequest;
 import carrotauction.com.carrotauction.network.response.AlarmApiResponse;
+import carrotauction.com.carrotauction.repository.AlarmRepository;
+import carrotauction.com.carrotauction.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Service
 public class AlarmApiLogicService extends BaseService<AlarmApiRequest, AlarmApiResponse, Alarm> {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AlarmRepository alarmRepository;
 
     @Override
     public Header<List<AlarmApiResponse>> search(Pageable pageable) {
         return null;
+    }
+
+    public Header<List<AlarmApiResponse>> searchMyAlarm(Pageable pageable, Long id) {
+        User user = userRepository.getOne(id);
+
+        Page<Alarm> alarms = alarmRepository.findAll(pageable);
+
+        List<AlarmApiResponse> alarmApiResponses = alarms.stream()
+                .filter(alarm -> alarm.getUser().equals(user))
+                .map(alarm -> response(alarm).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(alarms.getTotalPages())
+                .totalElements(alarms.getTotalElements())
+                .currentPage(alarms.getNumber())
+                .currentElements(alarms.getNumberOfElements())
+                .build();
+
+        return Header.OK(alarmApiResponses, pagination);
     }
 
     @Override
@@ -59,6 +94,7 @@ public class AlarmApiLogicService extends BaseService<AlarmApiRequest, AlarmApiR
 
         return Header.OK(alarmApiResponse);
     }
+
 
 
 }

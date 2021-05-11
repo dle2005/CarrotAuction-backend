@@ -29,7 +29,7 @@ public class ItemSample extends CarrotauctionApplicationTests {
 
     @Test
     public void sampleCreate() {
-        for(int i = 1; i < 100; i++) {
+        for (int i = 1; i < 100; i++) {
             Category category = Category.builder()
                     .category(CategoryType.values()[i % 7].toString())
                     .buy_year("201" + (i % 10))
