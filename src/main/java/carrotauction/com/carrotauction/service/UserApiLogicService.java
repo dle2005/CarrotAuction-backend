@@ -11,17 +11,22 @@ import carrotauction.com.carrotauction.network.response.*;
 import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
 import carrotauction.com.carrotauction.repository.ItemBiderRepository;
 import carrotauction.com.carrotauction.repository.ItemRepository;
+import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse, User> {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ItemBiderApiLogicService itemBiderApiLogicService;
@@ -188,6 +193,20 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .build();
 
         return Header.OK(itemApiResponseList, pagination);
+    }
+
+    public Header<UserApiResponse> login(UserApiRequest userApiRequest, HttpSession session) {
+        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
+
+        if (user == null) {
+            return Header.ERROR("Not exist user");
+        } else {
+            if(user.getUser_pw() == userApiRequest.getUser_pw()) {
+                session.setAttribute("user", user);
+                return response(user);
+            }
+            else return Header.ERROR("Wrong password");
+        }
     }
 }
 
