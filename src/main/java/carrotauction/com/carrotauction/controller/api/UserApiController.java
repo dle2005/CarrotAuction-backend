@@ -22,6 +22,11 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     @Autowired
     private UserApiLogicService userApiLogicService;
 
+    @PostMapping("/register")
+    public Header<UserApiResponse> register(@PathVariable Header<UserApiRequest> request) {
+        return userApiLogicService.register(request);
+    }
+
     @PostMapping("/login")
     public Header<UserApiResponse> login(@PathVariable UserApiRequest userApiRequest, @PathVariable HttpSession session) {
         return userApiLogicService.login(userApiRequest, session);

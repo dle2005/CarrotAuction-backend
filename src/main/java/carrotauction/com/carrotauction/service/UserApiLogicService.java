@@ -97,6 +97,42 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(userApiResponse);
     }
 
+
+    public Header<UserApiResponse> login(UserApiRequest userApiRequest, HttpSession session) {
+        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
+
+        if (user == null) {
+            return Header.ERROR("Not exist user");
+        } else {
+            if(user.getUser_pw() == userApiRequest.getUser_pw()) {
+                session.setAttribute("user", user);
+                return response(user);
+            }
+            else return Header.ERROR("Wrong password");
+        }
+    }
+
+    public Header<UserApiResponse> register(Header<UserApiRequest> request) {
+        UserApiRequest userApiRequest = request.getData();
+
+        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
+
+        if (user == null) {
+            User newUser = User.builder()
+                    .user_id(userApiRequest.getUser_id())
+                    .user_pw(userApiRequest.getUser_pw())
+                    .location(userApiRequest.getLocation())
+                    .nickname(userApiRequest.getNickname())
+                    .build();
+
+            User saveUser = baseRepository.save(newUser);
+
+            return response(saveUser);
+        } else {
+            return Header.ERROR("Already exist user id");
+        }
+    }
+
     public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
         User user = baseRepository.getOne(id);
         UserApiResponse userApiResponse = response(user).getData();
@@ -195,19 +231,6 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(itemApiResponseList, pagination);
     }
 
-    public Header<UserApiResponse> login(UserApiRequest userApiRequest, HttpSession session) {
-        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
-
-        if (user == null) {
-            return Header.ERROR("Not exist user");
-        } else {
-            if(user.getUser_pw() == userApiRequest.getUser_pw()) {
-                session.setAttribute("user", user);
-                return response(user);
-            }
-            else return Header.ERROR("Wrong password");
-        }
-    }
 }
 
 
