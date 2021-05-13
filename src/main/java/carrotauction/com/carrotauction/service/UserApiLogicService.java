@@ -46,6 +46,9 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    HttpSession session;
+
     @Override
     public Header<List<UserApiResponse>> search(Pageable pageable) {
         return null;
@@ -97,16 +100,14 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(userApiResponse);
     }
 
-
     public Header<UserApiResponse> login(Header<UserApiRequest> request) {
         User user = userRepository.findByEmail(request.getData().getEmail());
 
         if (user == null) {
             return Header.ERROR("Not exist user");
         } else {
-            System.out.println(user.getPassword() + " " + request.getData().getPassword());
             if(user.getPassword().equals(request.getData().getPassword())) {
-//                session.setAttribute("user", user);
+                session.setAttribute("user", user);
                 return response(user);
             }
             else return Header.ERROR("Wrong password");
