@@ -98,13 +98,13 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
 
-    public Header<UserApiResponse> login(UserApiRequest userApiRequest, HttpSession session) {
-        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
+    public Header<UserApiResponse> login(Header<UserApiRequest> request, HttpSession session) {
+        User user = userRepository.findByUser_id(request.getData().getUser_id());
 
         if (user == null) {
             return Header.ERROR("Not exist user");
         } else {
-            if(user.getUser_pw() == userApiRequest.getUser_pw()) {
+            if(user.getUser_pw() == request.getData().getUser_pw()) {
                 session.setAttribute("user", user);
                 return response(user);
             }

@@ -28,8 +28,8 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     }
 
     @PostMapping("/login")
-    public Header<UserApiResponse> login(@PathVariable UserApiRequest userApiRequest, @PathVariable HttpSession session) {
-        return userApiLogicService.login(userApiRequest, session);
+    public Header<UserApiResponse> login(@PathVariable Header<UserApiRequest> request, @PathVariable HttpSession session) {
+        return userApiLogicService.login(request, session);
     }
 
     @GetMapping("/{id}/itemBiderInfo")
