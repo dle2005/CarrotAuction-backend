@@ -56,8 +56,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         UserApiRequest userApiRequest = request.getData();
 
         User user = User.builder()
-                .user_id(userApiRequest.getUser_id())
-                .user_pw(userApiRequest.getUser_pw())
+                .email(userApiRequest.getEmail())
+                .password(userApiRequest.getPassword())
                 .location(userApiRequest.getLocation())
                 .nickname(userApiRequest.getNickname())
                 .build();
@@ -88,8 +88,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     private Header<UserApiResponse> response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
                 .id(user.getId())
-                .user_id(user.getUser_id())
-                .user_pw(user.getUser_pw())
+                .email(user.getEmail())
+                .password(user.getEmail())
                 .location(user.getLocation())
                 .nickname(user.getNickname())
                 .build();
@@ -98,14 +98,15 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
 
-    public Header<UserApiResponse> login(Header<UserApiRequest> request, HttpSession session) {
-        User user = userRepository.findByUser_id(request.getData().getUser_id());
+    public Header<UserApiResponse> login(Header<UserApiRequest> request) {
+        User user = userRepository.findByEmail(request.getData().getEmail());
 
         if (user == null) {
             return Header.ERROR("Not exist user");
         } else {
-            if(user.getUser_pw() == request.getData().getUser_pw()) {
-                session.setAttribute("user", user);
+            System.out.println(user.getPassword() + " " + request.getData().getPassword());
+            if(user.getPassword().equals(request.getData().getPassword())) {
+//                session.setAttribute("user", user);
                 return response(user);
             }
             else return Header.ERROR("Wrong password");
@@ -115,12 +116,12 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     public Header<UserApiResponse> register(Header<UserApiRequest> request) {
         UserApiRequest userApiRequest = request.getData();
 
-        User user = userRepository.findByUser_id(userApiRequest.getUser_id());
+        User user = userRepository.findByEmail(userApiRequest.getEmail());
 
         if (user == null) {
             User newUser = User.builder()
-                    .user_id(userApiRequest.getUser_id())
-                    .user_pw(userApiRequest.getUser_pw())
+                    .email(userApiRequest.getEmail())
+                    .password(userApiRequest.getPassword())
                     .location(userApiRequest.getLocation())
                     .nickname(userApiRequest.getNickname())
                     .build();

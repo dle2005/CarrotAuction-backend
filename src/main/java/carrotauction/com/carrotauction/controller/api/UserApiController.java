@@ -23,13 +23,13 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     private UserApiLogicService userApiLogicService;
 
     @PostMapping("/register")
-    public Header<UserApiResponse> register(@PathVariable Header<UserApiRequest> request) {
+    public Header<UserApiResponse> register(@RequestBody Header<UserApiRequest> request) {
         return userApiLogicService.register(request);
     }
 
     @PostMapping("/login")
-    public Header<UserApiResponse> login(@PathVariable Header<UserApiRequest> request, @PathVariable HttpSession session) {
-        return userApiLogicService.login(request, session);
+    public Header<UserApiResponse> login(@RequestBody Header<UserApiRequest> request) {
+        return userApiLogicService.login(request);
     }
 
     @GetMapping("/{id}/itemBiderInfo")

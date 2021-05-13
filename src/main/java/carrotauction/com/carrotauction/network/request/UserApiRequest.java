@@ -13,9 +13,9 @@ public class UserApiRequest {
 
     private Long id;
 
-    private String user_id;
+    private String email;
 
-    private String user_pw;
+    private String password;
 
     private String location;
 

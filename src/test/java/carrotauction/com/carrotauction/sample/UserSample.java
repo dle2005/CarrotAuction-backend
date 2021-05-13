@@ -18,8 +18,8 @@ public class UserSample extends CarrotauctionApplicationTests {
     public void sampleCreate(){
         for(int i = 1; i < 10; i++) {
             User user = User.builder()
-                    .user_id("TestUser" + i)
-                    .user_pw("TestUser" + i)
+                    .email("TestUser" + i)
+                    .password("TestUser" + i)
                     .location("서울특별시")
                     .nickname("도네왕" + i)
                     .build();
