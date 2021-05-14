@@ -33,8 +33,13 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     }
 
     @GetMapping("/myItem")
-    public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable) {
+    public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
         return userApiLogicService.myItem(pageable);
+    }
+
+    @GetMapping("/myBid")
+    public Header<List<ItemApiResponse>> searchMyBid(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+        return userApiLogicService.myBid(pageable);
     }
 
 //    @GetMapping("/{id}/itemBiderInfo")

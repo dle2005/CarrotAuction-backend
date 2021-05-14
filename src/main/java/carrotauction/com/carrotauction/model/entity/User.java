@@ -21,7 +21,6 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

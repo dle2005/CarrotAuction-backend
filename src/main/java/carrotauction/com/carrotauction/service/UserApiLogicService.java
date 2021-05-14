@@ -14,10 +14,12 @@ import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,6 +35,9 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private ItemBiderApiLogicService itemBiderApiLogicService;
 
     @Autowired
     HttpSession session;
@@ -130,6 +135,30 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
         List<ItemApiResponse> itemApiResponseList = items.stream()
                 .filter(item -> item.getUserId().equals(1L)) // user id가 들어가야 함
+                .map(item -> itemApiLogicService.response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
+
+    public Header<List<ItemApiResponse>> myBid(Pageable pageable) {
+        User user = baseRepository.getOne(2L);
+        List<ItemBider> itemBiderList = user.getItemBiderList();
+
+        List<Item> itemList = itemBiderList.stream()
+                .map(itemBider -> itemRepository.getOne(itemBider.getItem().getId()))
+                .collect(Collectors.toList());
+
+        Page<Item> items = new PageImpl<Item>(itemList, pageable, itemList.size());
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
                 .map(item -> itemApiLogicService.response(item).getData())
                 .collect(Collectors.toList());
 
