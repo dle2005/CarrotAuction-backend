@@ -128,13 +128,29 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
                 .userId(item.getUserId())
-                .itemImageApiResponses(itemImageApiResponseList)
                 .build();
 
         return Header.OK(itemApiResponse);
     }
 
     public Header<List<ItemApiResponse>> deadlineItemList(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(item -> response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
+
+    public Header<List<ItemApiResponse>> newItemList(Pageable pageable) {
         Page<Item> items = baseRepository.findAll(pageable);
 
         List<ItemApiResponse> itemApiResponseList = items.stream()

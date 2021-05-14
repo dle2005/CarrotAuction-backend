@@ -28,4 +28,9 @@ public class ItemApiController extends CrudController<ItemApiRequest, ItemApiRes
     public Header<List<ItemApiResponse>> deadlineItemList(@PageableDefault(sort = "duration", direction = Sort.Direction.ASC, size = 5) Pageable pageable) {
         return itemApiLogicService.deadlineItemList(pageable);
     }
+
+    @GetMapping("/newItemList")
+    public Header<List<ItemApiResponse>> newItemList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+        return itemApiLogicService.newItemList(pageable);
+    }
 }
