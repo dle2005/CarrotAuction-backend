@@ -22,6 +22,4 @@ public class UserApiResponse {
     private String location;
 
     private String nickname;
-
-    private List<ItemBiderApiResponse> itemBiderApiResponseList;
 }

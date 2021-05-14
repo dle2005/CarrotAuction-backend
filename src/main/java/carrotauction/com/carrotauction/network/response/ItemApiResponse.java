@@ -27,6 +27,4 @@ public class ItemApiResponse {
     private Long categoryId;
 
     private Long userId;
-
-    private List<ItemImageApiResponse> itemImageApiResponses;
 }

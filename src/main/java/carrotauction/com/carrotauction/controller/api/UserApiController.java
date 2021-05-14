@@ -32,23 +32,25 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiLogicService.login(request);
     }
 
-    @GetMapping("/{id}/itemBiderInfo")
-    public Header<UserItemBiderApiResponse> itemBiderInfo(@PathVariable Long id) {
-        return userApiLogicService.itemBiderInfo(id);
+    @GetMapping("/myItem")
+    public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable) {
+        return userApiLogicService.myItem(pageable);
     }
 
-    @GetMapping("/{id}/itemBider")
-    public Header<List<ItemBiderApiResponse>> searchItemBider(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
-        return userApiLogicService.searchItemBider(pageable, id);
-    }
-
-    @GetMapping("/{id}/favoriteItem")
-    public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
-        return userApiLogicService.searchFavoriteItem(pageable, id);
-    }
-
-    @GetMapping("/{id}/myItem")
-    public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
-        return userApiLogicService.searchMyItem(pageable, id);
-    }
+//    @GetMapping("/{id}/itemBiderInfo")
+//    public Header<UserItemBiderApiResponse> itemBiderInfo(@PathVariable Long id) {
+//        return userApiLogicService.itemBiderInfo(id);
+//    }
+//
+//    @GetMapping("/{id}/itemBider")
+//    public Header<List<ItemBiderApiResponse>> searchItemBider(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
+//        return userApiLogicService.searchItemBider(pageable, id);
+//    }
+//
+//    @GetMapping("/{id}/favoriteItem")
+//    public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10)Pageable pageable, @PathVariable Long id) {
+//        return userApiLogicService.searchFavoriteItem(pageable, id);
+//    }
+//
+//
 }
