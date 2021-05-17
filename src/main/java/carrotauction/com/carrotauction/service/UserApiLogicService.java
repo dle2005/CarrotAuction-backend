@@ -130,11 +130,13 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     public Header<List<ItemApiResponse>> myItem(Pageable pageable) {
 //        User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
+        User user = baseRepository.getOne(1L);
 
-        Page<Item> items = itemRepository.findAllByUserId(1L, pageable); // user id가 들어가야 함
+        List<Item> itemList = user.getItemList();
+
+        Page<Item> items = new PageImpl<>(itemList, pageable, itemList.size());
 
         List<ItemApiResponse> itemApiResponseList = items.stream()
-                .filter(item -> item.getUserId().equals(1L)) // user id가 들어가야 함
                 .map(item -> itemApiLogicService.response(item).getData())
                 .collect(Collectors.toList());
 

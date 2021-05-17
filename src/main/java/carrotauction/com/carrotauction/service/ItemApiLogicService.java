@@ -10,6 +10,7 @@ import carrotauction.com.carrotauction.network.response.ItemApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemImageApiResponse;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
 import carrotauction.com.carrotauction.repository.ItemImageRepository;
+import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -73,7 +77,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .start_price(itemApiRequest.getStart_price())
                 .duration(itemApiRequest.getDuration())
                 .categoryId(newCategory.getId())
-                .userId(itemApiRequest.getUserId())
+                .user(userRepository.getOne(itemApiRequest.getUserId()))
                 .build();
 
         Item newItem = baseRepository.save(item);
@@ -109,7 +113,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .start_price(item.getStart_price())
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
-                .userId(item.getUserId())
+                .userId(item.getUser().getId())
                 .build();
 
         return Header.OK(itemApiResponse);
@@ -127,7 +131,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .start_price(item.getStart_price())
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
-                .userId(item.getUserId())
+                .userId(item.getUser().getId())
                 .build();
 
         return Header.OK(itemApiResponse);

@@ -34,6 +34,9 @@ public class User {
     private String nickname;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Item> itemList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<ItemBider> itemBiderList;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

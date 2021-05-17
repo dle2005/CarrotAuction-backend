@@ -5,6 +5,7 @@ import carrotauction.com.carrotauction.model.entity.Category;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
 import carrotauction.com.carrotauction.repository.ItemRepository;
+import carrotauction.com.carrotauction.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ItemSample extends CarrotauctionApplicationTests {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     enum CategoryType {
         ELECTRONICS, BOOK, CLOTH, FURNITURE, FITNESS, BAG, ETC
@@ -45,7 +49,7 @@ public class ItemSample extends CarrotauctionApplicationTests {
                     .start_price((long) (i * 1000 + i * 100 + i * 10 + i))
                     .duration(LocalDateTime.now().plusDays(i % 10))
                     .categoryId(newCategory.getId())
-                    .userId((long) (i % 10))
+                    .user(userRepository.getOne((long) (i % 10)))
                     .build();
 
             itemRepository.save(item);

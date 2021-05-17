@@ -1,9 +1,6 @@
 package carrotauction.com.carrotauction.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,7 +35,9 @@ public class Item {
 
     private Long categoryId;
 
-    private Long userId;
+    @ManyToOne
+    @ToString.Exclude
+    private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<ItemBider> itemBiderList;
