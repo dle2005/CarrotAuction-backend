@@ -42,6 +42,11 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiLogicService.myBid(pageable);
     }
 
+    @GetMapping("/myFavorite")
+    public Header<List<ItemApiResponse>> searchMyFavorite(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+        return userApiLogicService.myFavorite(pageable);
+    }
+
 //    @GetMapping("/{id}/itemBiderInfo")
 //    public Header<UserItemBiderApiResponse> itemBiderInfo(@PathVariable Long id) {
 //        return userApiLogicService.itemBiderInfo(id);

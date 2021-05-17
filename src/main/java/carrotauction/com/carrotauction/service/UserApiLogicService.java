@@ -174,6 +174,27 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(itemApiResponseList, pagination);
     }
 
+    public Header<List<ItemApiResponse>> myFavorite(Pageable pageable) {
+        User user = baseRepository.getOne(1L);
+
+        List<Item> itemList = user.getItemList();
+
+        Page<Item> items = new PageImpl<>(itemList, pageable, itemList.size());
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(item -> itemApiLogicService.response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
+    }
+
 //    public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
 //        User user = baseRepository.getOne(id);
 //        UserApiResponse userApiResponse = response(user).getData();
