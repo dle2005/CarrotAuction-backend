@@ -17,9 +17,9 @@ public class CategoryApiController extends CrudController<CategoryApiRequest, Ca
     @Autowired
     private CategoryApiLogicService categoryApiLogicService;
 
-    @GetMapping(value = "/avgPrice/{category}/{buy_year}/{buy_price}/{status}")
-    public Header<AvgPriceApiResponse> getAvgPrice(@PathVariable String category, @PathVariable String buy_year, @PathVariable Long buy_price, @PathVariable String status) {
-        return categoryApiLogicService.getAvgPrice(category, buy_year, buy_price, status);
+    @PostMapping("/avgPrice")
+    public Header<AvgPriceApiResponse> getAvgPrice(@RequestBody Header<CategoryApiRequest> request) {
+        return categoryApiLogicService.getAvgPrice(request);
     }
 
 }

@@ -70,15 +70,19 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
         return Header.OK(categoryApiResponse);
     }
 
-    public Header<AvgPriceApiResponse> getAvgPrice(String category, String buy_year, Long buy_price, String status) {
-        List<Category> categories = categoryRepository.findAllByCategory(category);
-        categories.stream().filter(c -> c.getCategory().equals(category));
-        categories.stream().filter(c -> c.getBuy_year().equals(buy_year));
-        categories.stream().filter(c -> c.getBuy_price().equals(buy_price));
+    public Header<AvgPriceApiResponse> getAvgPrice(Header<CategoryApiRequest> request) {
+        CategoryApiRequest categoryApiRequest = request.getData();
+        List<Category> categories = categoryRepository
+                .findAllByCategoryAndStatus(categoryApiRequest.getCategory(), categoryApiRequest.getStatus());
 
+        int sum = 0;
+        System.out.println(categories.size());
+        for (Category category : categories) {
+            sum += category.getBuy_price();
+        }
 
         AvgPriceApiResponse avgPriceApiResponse = AvgPriceApiResponse.builder()
-                .price(categories.stream().count())
+                .price((long) (sum / categories.size()))
                 .build();
 
         return Header.OK(avgPriceApiResponse);
