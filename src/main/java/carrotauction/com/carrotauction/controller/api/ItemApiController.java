@@ -5,6 +5,7 @@ import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import carrotauction.com.carrotauction.network.response.ItemDetailApiResponse;
 import carrotauction.com.carrotauction.service.ItemApiLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -32,5 +33,10 @@ public class ItemApiController extends CrudController<ItemApiRequest, ItemApiRes
     @GetMapping("/newItemList")
     public Header<List<ItemApiResponse>> newItemList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
         return itemApiLogicService.newItemList(pageable);
+    }
+
+    @GetMapping("/itemDetail/{id}")
+    public Header<ItemDetailApiResponse> getItemDetail(@PathVariable Long id) {
+        return itemApiLogicService.itemDetail(id);
     }
 }

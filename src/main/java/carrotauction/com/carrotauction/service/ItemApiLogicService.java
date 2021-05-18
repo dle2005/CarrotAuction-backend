@@ -7,6 +7,7 @@ import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import carrotauction.com.carrotauction.network.response.ItemDetailApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemImageApiResponse;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
 import carrotauction.com.carrotauction.repository.ItemImageRepository;
@@ -169,5 +170,24 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .build();
 
         return Header.OK(itemApiResponseList, pagination);
+    }
+
+    public Header<ItemDetailApiResponse> itemDetail(Long id) {
+        Item item = baseRepository.getOne(id);
+
+        ItemDetailApiResponse itemDetailApiResponse = ItemDetailApiResponse.builder()
+                .title(item.getTitle())
+                .description(item.getDescription())
+                .category(categoryRepository.getOne(item.getCategoryId()).getCategory())
+                .start_price(item.getStart_price())
+                .current_price(item.getItemBiderList().get(0).getPrice())
+                .duration(item.getDuration())
+                .item_id(item.getId())
+                .user_id(item.getUser().getId())
+                .nickname(item.getUser().getNickname())
+                .location(item.getUser().getLocation())
+                .build();
+
+        return Header.OK(itemDetailApiResponse);
     }
 }
