@@ -50,7 +50,21 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
 
     @Override
     public Header<CategoryApiResponse> update(Header<CategoryApiRequest> request) {
-        return null;
+        CategoryApiRequest categoryApiRequest = request.getData();
+
+        Optional<Category> optional = baseRepository.findById(categoryApiRequest.getId());
+
+        return optional.map(category -> {
+            category.setCategory(categoryApiRequest.getCategory())
+                    .setBuy_year(categoryApiRequest.getBuy_year())
+                    .setBuy_price(categoryApiRequest.getBuy_price())
+                    .setStatus(categoryApiRequest.getStatus());
+
+            return category;
+        })
+                .map(category -> baseRepository.save(category))
+                .map(category -> response(category))
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
