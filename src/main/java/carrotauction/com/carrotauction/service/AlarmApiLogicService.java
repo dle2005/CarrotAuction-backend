@@ -76,7 +76,22 @@ public class AlarmApiLogicService extends BaseService<AlarmApiRequest, AlarmApiR
 
     @Override
     public Header<AlarmApiResponse> update(Header<AlarmApiRequest> request) {
-        return null;
+        AlarmApiRequest alarmApiRequest = request.getData();
+
+        Optional<Alarm> optional = baseRepository.findById(alarmApiRequest.getId());
+
+        return optional.map(alarm -> {
+            alarm.setTitle(alarm.getTitle())
+                    .setDescription(alarm.getDescription())
+                    .setStatus(alarmApiRequest.getStatus())
+                    .setItem_id(alarm.getItem_id())
+                    .setUser(alarm.getUser());
+
+            return alarm;
+            })
+            .map(alarm -> baseRepository.save(alarm))
+            .map(alarm -> response(alarm))
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
