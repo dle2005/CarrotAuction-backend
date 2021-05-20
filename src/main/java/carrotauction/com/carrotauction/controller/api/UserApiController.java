@@ -32,6 +32,11 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiLogicService.login(request);
     }
 
+    @GetMapping("/logout")
+    public Header<String> logOut() {
+        return userApiLogicService.logout();
+    }
+
     @GetMapping("/loginUser")
     public Header<UserApiResponse> loginUser() {
         return userApiLogicService.loginUser();

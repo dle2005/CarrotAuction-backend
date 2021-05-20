@@ -107,6 +107,15 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         }
     }
 
+    public Header<String> logout() {
+        User user = (User) session.getAttribute("user");
+        if(user == null) return Header.ERROR("Not login state");
+        else {
+            session.removeAttribute("user");
+            return Header.OK("log out successful");
+        }
+    }
+
     public Header<UserApiResponse> loginUser() {
         User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
 
@@ -203,7 +212,6 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
         return Header.OK(itemApiResponseList, pagination);
     }
-
 
 
 //    public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
