@@ -47,8 +47,9 @@ public class ItemSample extends CarrotauctionApplicationTests {
                     .title("TestItem" + i)
                     .description("TestItem" + i)
                     .start_price((long) (i * 1000 + i * 100 + i * 10 + i))
-                    .duration(LocalDateTime.now().plusDays(i % 10))
+                    .duration(LocalDateTime.now().plusDays(i % 10).plusMinutes(1))
                     .categoryId(newCategory.getId())
+                    .status("판매중")
                     .user(userRepository.getOne((long) (i % 9) + 1))
                     .build();
 

@@ -79,6 +79,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .start_price(itemApiRequest.getStart_price())
                 .duration(itemApiRequest.getDuration())
                 .categoryId(newCategory.getId())
+                .status("판매중")
                 .user(userRepository.getOne(itemApiRequest.getUserId()))
                 .build();
 

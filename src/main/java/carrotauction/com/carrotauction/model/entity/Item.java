@@ -35,6 +35,8 @@ public class Item {
 
     private Long categoryId;
 
+    private String status;
+
     @ManyToOne
     @ToString.Exclude
     private User user;
