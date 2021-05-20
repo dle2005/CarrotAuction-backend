@@ -107,6 +107,14 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         }
     }
 
+    public Header<UserApiResponse> loginUser() {
+        User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
+
+        if(user == null)
+            return Header.ERROR("Not exist user");
+        else return response(user);
+    }
+
     public Header<UserApiResponse> register(Header<UserApiRequest> request) {
         UserApiRequest userApiRequest = request.getData();
 
@@ -194,6 +202,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
         return Header.OK(itemApiResponseList, pagination);
     }
+
+
 
 //    public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
 //        User user = baseRepository.getOne(id);

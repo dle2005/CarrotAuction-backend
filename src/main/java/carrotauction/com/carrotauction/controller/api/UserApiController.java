@@ -32,6 +32,11 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiLogicService.login(request);
     }
 
+    @GetMapping("/loginUser")
+    public Header<UserApiResponse> loginUser() {
+        return userApiLogicService.loginUser();
+    }
+
     @GetMapping("/myItem")
     public Header<List<ItemApiResponse>> searchMyItem(@PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
         return userApiLogicService.myItem(pageable);
