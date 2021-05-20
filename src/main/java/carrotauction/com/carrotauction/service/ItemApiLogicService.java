@@ -193,14 +193,13 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     }
 
     public Header<List<ItemApiResponse>> searchItem(Pageable pageable, String title) {
-        Page<Item> items = baseRepository.findAll(pageable);
-//        List<Item> itemList = itemRepository.findAllByTitleRegex("*");
+        List<Item> itemList = baseRepository.findAll()
+                .stream().filter(item -> item.getTitle().matches(".*"+title+".*"))
+                .collect(Collectors.toList());
 
-//        System.out.println(itemList.size());
-//        Page<Item> items = new PageImpl<Item>(itemList, pageable, itemList.size());
+        Page<Item> items = new PageImpl<Item>(itemList, pageable, itemList.size());
 
         List<ItemApiResponse> itemApiResponseList = items.stream()
-                .filter(item -> item.getTitle().matches(".*"+title+".*"))
                 .map(item -> response(item).getData())
                 .collect(Collectors.toList());
 
