@@ -159,6 +159,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myBid(Pageable pageable) {
+//        User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
         User user = baseRepository.getOne(2L);
         List<ItemBider> itemBiderList = user.getItemBiderList();
 

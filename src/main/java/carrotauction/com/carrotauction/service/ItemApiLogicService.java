@@ -11,12 +11,10 @@ import carrotauction.com.carrotauction.network.response.ItemDetailApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemImageApiResponse;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
 import carrotauction.com.carrotauction.repository.ItemImageRepository;
+import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -26,6 +24,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -189,5 +190,27 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .build();
 
         return Header.OK(itemDetailApiResponse);
+    }
+
+    public Header<List<ItemApiResponse>> searchItem(Pageable pageable, String title) {
+        Page<Item> items = baseRepository.findAll(pageable);
+//        List<Item> itemList = itemRepository.findAllByTitleRegex("*");
+
+//        System.out.println(itemList.size());
+//        Page<Item> items = new PageImpl<Item>(itemList, pageable, itemList.size());
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .filter(item -> item.getTitle().matches(".*"+title+".*"))
+                .map(item -> response(item).getData())
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList, pagination);
     }
 }

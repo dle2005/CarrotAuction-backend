@@ -49,7 +49,7 @@ public class ItemSample extends CarrotauctionApplicationTests {
                     .start_price((long) (i * 1000 + i * 100 + i * 10 + i))
                     .duration(LocalDateTime.now().plusDays(i % 10))
                     .categoryId(newCategory.getId())
-                    .user(userRepository.getOne((long) (i % 10)))
+                    .user(userRepository.getOne((long) (i % 9) + 1))
                     .build();
 
             itemRepository.save(item);

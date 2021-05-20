@@ -39,4 +39,9 @@ public class ItemApiController extends CrudController<ItemApiRequest, ItemApiRes
     public Header<ItemDetailApiResponse> getItemDetail(@PathVariable Long id) {
         return itemApiLogicService.itemDetail(id);
     }
+
+    @GetMapping("/search/{title}")
+    public Header<List<ItemApiResponse>> searchItem(@PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 5) Pageable pageable, @PathVariable String title) {
+        return itemApiLogicService.searchItem(pageable, title);
+    }
 }
