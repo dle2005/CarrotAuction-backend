@@ -74,21 +74,16 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
-        Optional<User> optional = (Optional<User>) session.getAttribute("user");
-//        Optional<User> optional = baseRepository.findById(1L);
+        User user = (User) session.getAttribute("user");
+//        User user = baseRepository.getOne(1L);
         UserApiRequest userApiRequest = request.getData();
 
-        return optional.map(user -> {
-            user.setId(user.getId())
-                    .setPassword(userApiRequest.getPassword() == null ? user.getPassword() : userApiRequest.getPassword())
-                    .setLocation(userApiRequest.getLocation() == null ? user.getLocation() : userApiRequest.getLocation())
-                    .setNickname(userApiRequest.getNickname() == null ? user.getNickname() : userApiRequest.getNickname());
+       user.setId(user.getId())
+            .setPassword(userApiRequest.getPassword() == null ? user.getPassword() : userApiRequest.getPassword())
+            .setLocation(userApiRequest.getLocation() == null ? user.getLocation() : userApiRequest.getLocation())
+            .setNickname(userApiRequest.getNickname() == null ? user.getNickname() : userApiRequest.getNickname());
 
-            return user;
-            })
-            .map(user -> baseRepository.save(user))
-            .map(user -> response(user))
-            .orElseGet(() -> Header.ERROR("데이터 없음"));
+        return response(baseRepository.save(user));
     }
 
     @Override
