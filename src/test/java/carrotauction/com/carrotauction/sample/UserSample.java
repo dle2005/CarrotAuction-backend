@@ -1,6 +1,5 @@
 package carrotauction.com.carrotauction.sample;
 
-import carrotauction.com.carrotauction.CarrotauctionApplication;
 import carrotauction.com.carrotauction.CarrotauctionApplicationTests;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.repository.UserRepository;
