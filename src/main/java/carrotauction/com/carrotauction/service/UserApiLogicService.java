@@ -1,26 +1,23 @@
 package carrotauction.com.carrotauction.service;
 
-import carrotauction.com.carrotauction.model.entity.FavoriteItem;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
-import carrotauction.com.carrotauction.network.response.*;
-import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
-import carrotauction.com.carrotauction.repository.ItemBiderRepository;
+import carrotauction.com.carrotauction.network.response.ItemApiResponse;
+import carrotauction.com.carrotauction.network.response.UserApiResponse;
 import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.objenesis.ObjenesisBase;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -156,8 +153,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myItem(Pageable pageable) {
-//        User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
-        User user = baseRepository.getOne(1L);
+        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
 
         List<Item> itemList = user.getItemList();
 
@@ -178,8 +174,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myBid(Pageable pageable) {
-//        User user = (User) session.getAttribute("user"); // login 해야만 데이터 가져올 수 있음
-        User user = baseRepository.getOne(2L);
+        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
+
         List<ItemBider> itemBiderList = user.getItemBiderList();
 
         List<Item> itemList = itemBiderList.stream()
@@ -202,8 +198,10 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(itemApiResponseList, pagination);
     }
 
+
+    @Transactional
     public Header<List<ItemApiResponse>> myFavorite(Pageable pageable) {
-        User user = (User) session.getAttribute("user");
+        User user = baseRepository.getOne(((User)session.getAttribute("user")).getId());
 
         List<Item> itemList = user.getItemList();
 
