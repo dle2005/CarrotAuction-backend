@@ -3,6 +3,7 @@ package carrotauction.com.carrotauction.service;
 import carrotauction.com.carrotauction.model.entity.Category;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.model.entity.ItemImage;
+import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,9 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
     @Autowired
     private ItemImageApiLogicService itemImageApiLogicService;
+
+    @Autowired
+    HttpSession session;
 
     @Override
     public Header<List<ItemApiResponse>> search(Pageable pageable) {
@@ -110,6 +115,8 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     }
 
     public Header<ItemApiResponse> response(Item item) {
+        User user = (User) session.getAttribute("user");
+
         ItemApiResponse itemApiResponse = ItemApiResponse.builder()
                 .id(item.getId())
                 .title(item.getTitle())
@@ -118,6 +125,9 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
                 .userId(item.getUser().getId())
+                .location(item.getUser().getLocation())
+                .favorite(user.getFavoriteItemList().contains(item) ? true : false)
+                .likes((long)item.getFavoriteItemList().size())
                 .build();
 
         return Header.OK(itemApiResponse);

@@ -27,4 +27,10 @@ public class ItemApiResponse {
     private Long categoryId;
 
     private Long userId;
+
+    private String location;
+
+    private boolean favorite;
+
+    private Long likes;
 }

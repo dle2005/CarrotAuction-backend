@@ -47,6 +47,9 @@ public class Item {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<ItemImage> itemImages;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<FavoriteItem> favoriteItemList;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
