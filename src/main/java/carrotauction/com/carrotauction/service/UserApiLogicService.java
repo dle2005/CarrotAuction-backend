@@ -203,7 +203,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myFavorite(Pageable pageable) {
-        User user = baseRepository.getOne(1L);
+        User user = (User) session.getAttribute("user");
 
         List<Item> itemList = user.getItemList();
 
