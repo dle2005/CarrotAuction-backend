@@ -114,7 +114,10 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     }
 
     public Header<ItemApiResponse> response(Item item) {
-        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
+        User user = null;
+
+        if((User) session.getAttribute("user") != null)
+            user = userRepository.getOne(((User)session.getAttribute("user")).getId());
 
         ItemApiResponse itemApiResponse = ItemApiResponse.builder()
                 .id(item.getId())
@@ -125,7 +128,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .categoryId(item.getCategoryId())
                 .userId(item.getUser().getId())
                 .location(item.getUser().getLocation())
-                .favorite(user.getFavoriteItemList().contains(item) ? true : false)
+                .favorite(user == null ? false : user.getFavoriteItemList().contains(item) ? true : false)
                 .likes((long) item.getFavoriteItemList().size())
                 .build();
 
