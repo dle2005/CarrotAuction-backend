@@ -96,7 +96,13 @@ public class AlarmApiLogicService extends BaseService<AlarmApiRequest, AlarmApiR
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<Alarm> optional = baseRepository.findById(id);
+
+        return optional.map(alarm -> {
+            baseRepository.delete(alarm);
+            return Header.OK();
+            })
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     private Header<AlarmApiResponse> response(Alarm alarm) {

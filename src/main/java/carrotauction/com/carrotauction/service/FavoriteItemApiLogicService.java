@@ -56,7 +56,13 @@ public class FavoriteItemApiLogicService extends BaseService<FavoriteItemApiRequ
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<FavoriteItem> optional = baseRepository.findById(id);
+
+        return optional.map(favoriteItem -> {
+            baseRepository.delete(favoriteItem);
+            return Header.OK();
+            })
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     public Header<FavoriteItemApiResponse> response(FavoriteItem favoriteItem) {

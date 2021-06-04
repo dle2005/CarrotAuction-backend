@@ -57,7 +57,13 @@ public class ItemBiderApiLogicService extends BaseService<ItemBiderApiRequest, I
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<ItemBider> optional = baseRepository.findById(id);
+
+        return optional.map(itemBider -> {
+            baseRepository.delete(itemBider);
+            return Header.OK();
+            })
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     public Header<ItemBiderApiResponse> response(ItemBider itemBider) {

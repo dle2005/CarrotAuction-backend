@@ -69,7 +69,13 @@ public class CategoryApiLogicService extends BaseService<CategoryApiRequest, Cat
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<Category> optional = baseRepository.findById(id);
+
+        return optional.map(category -> {
+            baseRepository.delete(category);
+            return Header.OK();
+            })
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     private Header<CategoryApiResponse> response(Category category) {

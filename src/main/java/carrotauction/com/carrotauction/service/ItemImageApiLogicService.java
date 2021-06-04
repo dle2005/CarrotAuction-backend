@@ -46,7 +46,13 @@ public class ItemImageApiLogicService extends BaseService<ItemImageApiRequest, I
 
     @Override
     public Header delete(Long id) {
-        return null;
+        Optional<ItemImage> optional = baseRepository.findById(id);
+
+        return optional.map(itemImage -> {
+            baseRepository.delete(itemImage);
+            return Header.OK();
+            })
+            .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     public Header<ItemImageApiResponse> response(ItemImage itemImage) {
