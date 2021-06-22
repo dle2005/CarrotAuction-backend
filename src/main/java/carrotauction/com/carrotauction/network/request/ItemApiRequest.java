@@ -28,7 +28,7 @@ public class ItemApiRequest {
 
     private String category;
 
-    private List<MultipartFile> multipartFiles;
+    private List<String> url;
 
     private String buy_year;
 

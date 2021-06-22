@@ -95,20 +95,13 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
         Item newItem = baseRepository.save(item);
 
-        if (itemApiRequest.getMultipartFiles() != null) {
-            System.out.println("test");
-            List<MultipartFile> multipartFiles = itemApiRequest.getMultipartFiles();
-            for (int i = 0; i < multipartFiles.size(); i++) {
-                MultipartFile file = multipartFiles.get(i);
-
-                ItemImage itemImage = null;
-                try {
-                    itemImage = ItemImage.builder()
-                            .url(s3Service.upload(file))
-                            .item(newItem)
-                            .build();
-                } catch (Exception e) {
-                }
+        if (itemApiRequest.getUrl() != null) {
+            List<String> url = itemApiRequest.getUrl();
+            for (int i = 0; i < url.size(); i++) {
+                ItemImage itemImage = ItemImage.builder()
+                        .url(url.get(i))
+                        .item(newItem)
+                        .build();
 
                 itemImageRepository.save(itemImage);
             }
