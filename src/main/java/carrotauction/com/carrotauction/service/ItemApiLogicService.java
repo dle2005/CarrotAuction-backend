@@ -218,6 +218,10 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     public Header<ItemDetailApiResponse> itemDetail(Long id) {
         Item item = baseRepository.getOne(id);
 
+        List<String> url = new ArrayList<>();
+        for (int i = 0; i < item.getItemImages().size(); i++)
+            url.add(item.getItemImages().get(0).getUrl());
+
         ItemDetailApiResponse itemDetailApiResponse = ItemDetailApiResponse.builder()
                 .title(item.getTitle())
                 .description(item.getDescription())
@@ -229,6 +233,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .user_id(item.getUser().getId())
                 .nickname(item.getUser().getNickname())
                 .location(item.getUser().getLocation())
+                .images(url)
                 .build();
 
         return Header.OK(itemDetailApiResponse);

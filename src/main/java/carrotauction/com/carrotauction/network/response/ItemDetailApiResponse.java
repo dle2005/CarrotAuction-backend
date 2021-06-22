@@ -1,5 +1,6 @@
 package carrotauction.com.carrotauction.network.response;
 
+import carrotauction.com.carrotauction.model.entity.ItemImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,5 +35,5 @@ public class ItemDetailApiResponse {
 
     private String location;
 
-    private List<ItemImageApiResponse> itemImageApiResponseList;
+    private List<String> images;
 }
