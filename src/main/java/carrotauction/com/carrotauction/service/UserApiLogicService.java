@@ -165,7 +165,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myItem(Pageable pageable) {
-        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
+//        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
+        User user = baseRepository.getOne(2L);
 
         List<Item> itemList = user.getItemList();
 

@@ -149,7 +149,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .id(item.getId())
                 .title(item.getTitle())
                 .description(item.getDescription())
-                .url(item.getItemImages() == null ? null : item.getItemImages().get(0).getUrl())
+                .url(item.getItemImages().size() == 0 ? "" : item.getItemImages().get(0).getUrl())
                 .start_price(item.getStart_price())
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
