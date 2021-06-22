@@ -20,6 +20,8 @@ public class ItemApiResponse {
 
     private String description;
 
+    private String url;
+
     private Long start_price;
 
     private LocalDateTime duration;
