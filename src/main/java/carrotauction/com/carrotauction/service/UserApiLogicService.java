@@ -1,5 +1,6 @@
 package carrotauction.com.carrotauction.service;
 
+import carrotauction.com.carrotauction.model.entity.FavoriteItem;
 import carrotauction.com.carrotauction.model.entity.Item;
 import carrotauction.com.carrotauction.model.entity.ItemBider;
 import carrotauction.com.carrotauction.model.entity.User;
@@ -8,6 +9,7 @@ import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.UserApiRequest;
 import carrotauction.com.carrotauction.network.response.ItemApiResponse;
 import carrotauction.com.carrotauction.network.response.UserApiResponse;
+import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
 import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private FavoriteItemRepository favoriteItemRepository;
 
     @Autowired
     private ItemBiderApiLogicService itemBiderApiLogicService;
@@ -210,7 +215,11 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     public Header<List<ItemApiResponse>> myFavorite(Pageable pageable) {
         User user = baseRepository.getOne(((User)session.getAttribute("user")).getId());
 
-        List<Item> itemList = user.getItemList();
+        List<FavoriteItem> favoriteItemList = user.getFavoriteItemList();
+
+        List<Item> itemList = favoriteItemList.stream()
+                .map(favoriteItem -> itemRepository.getOne(favoriteItem.getItem().getId()))
+                .collect(Collectors.toList());
 
         Page<Item> items = new PageImpl<>(itemList, pageable, itemList.size());
 
