@@ -16,6 +16,4 @@ public class FavoriteItemApiResponse {
     private Long user;
 
     private Long item;
-
-    private ItemApiResponse itemApiResponse;
 }

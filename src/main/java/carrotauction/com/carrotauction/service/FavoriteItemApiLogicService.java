@@ -1,6 +1,9 @@
 package carrotauction.com.carrotauction.service;
 
 import carrotauction.com.carrotauction.model.entity.FavoriteItem;
+import carrotauction.com.carrotauction.model.entity.Item;
+import carrotauction.com.carrotauction.model.entity.ItemBider;
+import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.request.FavoriteItemApiRequest;
 import carrotauction.com.carrotauction.network.response.FavoriteItemApiResponse;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,9 @@ public class FavoriteItemApiLogicService extends BaseService<FavoriteItemApiRequ
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    HttpSession session;
 
     @Override
     public Header<List<FavoriteItemApiResponse>> search(Pageable pageable) {
@@ -73,5 +80,28 @@ public class FavoriteItemApiLogicService extends BaseService<FavoriteItemApiRequ
                 .build();
 
         return Header.OK(favoriteItemApiResponse);
+    }
+
+    public Header<String> toggle(Long id) { // id = item id
+        User user = userRepository.getOne(((User) session.getAttribute("user")).getId());
+//        User user = userRepository.getOne(1L);
+
+        Item item = itemRepository.getOne(id);
+
+        for (FavoriteItem favoriteItem : user.getFavoriteItemList()) {
+            if (favoriteItem.getItem().equals(item)) {
+                delete(favoriteItem.getId());
+                return Header.OK();
+            }
+        }
+
+        FavoriteItem favoriteItem = FavoriteItem.builder()
+                .user(user)
+                .item(item)
+                .build();
+
+        FavoriteItem newFavoriteItem = baseRepository.save(favoriteItem);
+
+        return Header.OK();
     }
 }
