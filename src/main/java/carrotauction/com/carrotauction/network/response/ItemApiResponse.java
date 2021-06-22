@@ -28,6 +28,8 @@ public class ItemApiResponse {
 
     private Long userId;
 
+    private String nickname;
+
     private String location;
 
     private boolean favorite;

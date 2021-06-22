@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -86,7 +87,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .title(itemApiRequest.getTitle())
                 .description(itemApiRequest.getDescription())
                 .start_price(itemApiRequest.getStart_price())
-                .duration(itemApiRequest.getDuration())
+                .duration(LocalDateTime.now().plusDays(itemApiRequest.getDuration()))
                 .categoryId(newCategory.getId())
                 .status("판매중")
                 .user(user)
@@ -94,19 +95,23 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
         Item newItem = baseRepository.save(item);
 
-        List<MultipartFile> multipartFiles = itemApiRequest.getMultipartFiles();
-        for (int i = 0; i < multipartFiles.size(); i++) {
-            MultipartFile file = multipartFiles.get(i);
+        if (itemApiRequest.getMultipartFiles() != null) {
+            System.out.println("test");
+            List<MultipartFile> multipartFiles = itemApiRequest.getMultipartFiles();
+            for (int i = 0; i < multipartFiles.size(); i++) {
+                MultipartFile file = multipartFiles.get(i);
 
-            ItemImage itemImage = null;
-            try {
-                itemImage = ItemImage.builder()
-                        .url(s3Service.upload(file))
-                        .item(newItem)
-                        .build();
-            } catch (Exception e) {}
+                ItemImage itemImage = null;
+                try {
+                    itemImage = ItemImage.builder()
+                            .url(s3Service.upload(file))
+                            .item(newItem)
+                            .build();
+                } catch (Exception e) {
+                }
 
-            itemImageRepository.save(itemImage);
+                itemImageRepository.save(itemImage);
+            }
         }
 
         return response(newItem);
@@ -152,9 +157,10 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .duration(item.getDuration())
                 .categoryId(item.getCategoryId())
                 .userId(item.getUser().getId())
+                .nickname(item.getUser().getNickname())
                 .location(item.getUser().getLocation())
                 .favorite(user == null ? false : user.getFavoriteItemList().contains(item) ? true : false)
-                .likes((long) item.getFavoriteItemList().size())
+                .likes(item.getFavoriteItemList() == null ? 0 : (long) item.getFavoriteItemList().size())
                 .build();
 
         return Header.OK(itemApiResponse);

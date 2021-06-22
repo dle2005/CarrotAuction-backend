@@ -24,7 +24,7 @@ public class ItemApiRequest {
 
     private Long start_price;
 
-    private LocalDateTime duration;
+    private int duration;
 
     private String category;
 
