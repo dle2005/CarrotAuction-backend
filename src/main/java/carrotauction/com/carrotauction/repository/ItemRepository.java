@@ -1,6 +1,7 @@
 package carrotauction.com.carrotauction.repository;
 
 import carrotauction.com.carrotauction.model.entity.Item;
+import carrotauction.com.carrotauction.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -26,7 +27,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
 
     @Override
     @PostMapping("")
-    public Header<Res> create(@RequestBody Header<Req> request) {
+    public Header<Res> create(@RequestBody Header<Req> request) throws IOException {
         return baseService.create(request);
     }
 

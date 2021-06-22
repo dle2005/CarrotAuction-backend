@@ -52,18 +52,17 @@ public class DurationScheduler {
             alarmRepository.save(seller);
 
 
-//            if(item.getItemBiderList().size() > 0) {
-//                Alarm buyer = Alarm.builder()
-//                        .title("상품 종료")
-//                        .description("상품 종료")
-//                        .status("안읽음")
-//                        .user(userRepository.getOne(item.getItemBiderList().get(0).getId()))
-//                        .item_id(item.getId())
-//                        .build();
-//
-//                alarmRepository.save(buyer);
-//            }
+            if (item.getItemBiderList().size() > 0) {
+                Alarm buyer = Alarm.builder()
+                        .title("상품 종료")
+                        .description("상품 종료")
+                        .status("안읽음")
+                        .user(userRepository.getOne(item.getItemBiderList().get(0).getId()))
+                        .item_id(item.getId())
+                        .build();
 
+                alarmRepository.save(buyer);
+            }
 
             itemRepository.save(item);
         }

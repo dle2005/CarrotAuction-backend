@@ -15,9 +15,11 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,8 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     @Autowired
     HttpSession session;
 
+    private S3Service s3Service;
+
     @Override
     public Header<List<ItemApiResponse>> search(Pageable pageable) {
         Page<Item> items = baseRepository.findAll(pageable);
@@ -64,7 +68,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     }
 
     @Override
-    public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
+    public Header<ItemApiResponse> create(Header<ItemApiRequest> request) throws IOException {
         ItemApiRequest itemApiRequest = request.getData();
 
         Category category = Category.builder()
@@ -74,9 +78,6 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .build();
 
         Category newCategory = categoryRepository.save(category);
-
-        List<ItemImage> itemImages = itemApiRequest.getItemImages();
-        itemImages.stream().map(itemImage -> itemImageRepository.save(itemImage));
 
         Item item = Item.builder()
                 .title(itemApiRequest.getTitle())
@@ -89,6 +90,21 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .build();
 
         Item newItem = baseRepository.save(item);
+
+        List<MultipartFile> multipartFiles = itemApiRequest.getMultipartFiles();
+        for (int i = 0; i < multipartFiles.size(); i++) {
+            MultipartFile file = multipartFiles.get(i);
+
+            ItemImage itemImage = null;
+            try {
+                itemImage = ItemImage.builder()
+                        .url(s3Service.upload(file))
+                        .item(newItem)
+                        .build();
+            } catch (Exception e) {}
+
+            itemImageRepository.save(itemImage);
+        }
 
         return response(newItem);
     }
