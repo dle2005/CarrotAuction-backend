@@ -35,6 +35,4 @@ public class ItemApiRequest {
     private Long buy_price;
 
     private String status;
-
-    private Long userId;
 }

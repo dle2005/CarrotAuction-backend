@@ -69,6 +69,9 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) throws IOException {
+//        User user = userRepository.getOne(((User) session.getAttribute("user")).getId());
+        User user = userRepository.getOne(1L);
+
         ItemApiRequest itemApiRequest = request.getData();
 
         Category category = Category.builder()
@@ -86,7 +89,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .duration(itemApiRequest.getDuration())
                 .categoryId(newCategory.getId())
                 .status("판매중")
-                .user(userRepository.getOne(itemApiRequest.getUserId()))
+                .user(user)
                 .build();
 
         Item newItem = baseRepository.save(item);
