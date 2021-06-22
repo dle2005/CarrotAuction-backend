@@ -29,6 +29,6 @@ public class GalleryController {
 
         galleryService.savePost(galleryDto);
 
-        return "redirect:/gallery";
+        return galleryDto.getFilePath();
     }
 }
