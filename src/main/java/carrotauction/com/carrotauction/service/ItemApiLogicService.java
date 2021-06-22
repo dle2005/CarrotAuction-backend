@@ -95,7 +95,10 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
         Item newItem = baseRepository.save(item);
 
+        System.out.println(itemApiRequest.getUrl().size());
+
         if (itemApiRequest.getUrl() != null) {
+            System.out.println("test");
             List<String> url = itemApiRequest.getUrl();
             for (int i = 0; i < url.size(); i++) {
                 ItemImage itemImage = ItemImage.builder()

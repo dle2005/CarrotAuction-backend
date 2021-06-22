@@ -1,34 +1,22 @@
 package carrotauction.com.carrotauction.controller;
 
-import carrotauction.com.carrotauction.service.GalleryDto;
-import carrotauction.com.carrotauction.service.GalleryService;
 import carrotauction.com.carrotauction.service.S3Service;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class GalleryController {
     private S3Service s3Service;
-    private GalleryService galleryService;
 
-    @GetMapping("/gallery")
-    public String dispWrite() {
-        return "/gallery";
-    }
-
-    @PostMapping(value = "/gallery")
-    public String execWrite(GalleryDto galleryDto, MultipartFile file) throws IOException {
-        String imgPath = s3Service.upload(file);
-        galleryDto.setFilePath(imgPath);
-
-        galleryService.savePost(galleryDto);
-
-        return galleryDto.getFilePath();
+    @PostMapping("/gallery")
+    public String execWrite(MultipartFile file) throws IOException {
+        String file_path = s3Service.upload(file);
+        System.out.println(file_path);
+        return file_path;
     }
 }
