@@ -37,7 +37,7 @@ public class ItemSample extends CarrotauctionApplicationTests {
             Category category = Category.builder()
                     .category(CategoryType.values()[i % 7].toString())
                     .buy_year("201" + (i % 10))
-                    .buy_price((long) (i * 1000 + i * 100 + i * 10 + i))
+                    .buy_price((long) (i * 1000))
                     .status(StateType.values()[i % 3].toString())
                     .build();
 
@@ -46,8 +46,8 @@ public class ItemSample extends CarrotauctionApplicationTests {
             Item item = Item.builder()
                     .title("TestItem" + i)
                     .description("TestItem" + i)
-                    .start_price((long) (i * 1000 + i * 100 + i * 10 + i))
-                    .duration(LocalDateTime.now().plusDays(i % 10).plusMinutes(1))
+                    .start_price((long) (i * 1000))
+                    .duration(LocalDateTime.now().plusDays(i % 10).plusMinutes(3))
                     .categoryId(newCategory.getId())
                     .status("판매중")
                     .user(userRepository.getOne((long) (i % 9) + 1))

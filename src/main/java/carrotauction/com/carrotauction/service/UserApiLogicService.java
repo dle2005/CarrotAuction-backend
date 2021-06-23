@@ -13,7 +13,6 @@ import carrotauction.com.carrotauction.repository.FavoriteItemRepository;
 import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -165,8 +164,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myItem(Pageable pageable) {
-//        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
-        User user = baseRepository.getOne(2L);
+        User user = baseRepository.getOne(((User)session.getAttribute("user")).getId());
+//        User user = baseRepository.getOne(2L);
 
         List<Item> itemList = user.getItemList();
 
@@ -187,7 +186,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     public Header<List<ItemApiResponse>> myBid(Pageable pageable) {
-        User user = userRepository.getOne(((User)session.getAttribute("user")).getId());
+        User user = baseRepository.getOne(((User)session.getAttribute("user")).getId());
 
         List<ItemBider> itemBiderList = user.getItemBiderList();
 
@@ -237,88 +236,6 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
         return Header.OK(itemApiResponseList, pagination);
     }
-
-
-//    public Header<UserItemBiderApiResponse> itemBiderInfo(Long id) {
-//        User user = baseRepository.getOne(id);
-//        UserApiResponse userApiResponse = response(user).getData();
-//
-//        List<ItemBider> itemBiderList = user.getItemBiderList();
-//        List<ItemBiderApiResponse> itemBiderApiResponseList = itemBiderList.stream()
-//                .map(itemBider -> {
-//                    ItemBiderApiResponse itemBiderApiResponse = itemBiderApiLogicService.response(itemBider).getData();
-//                    Item item = itemBider.getItem();
-//                    ItemApiResponse itemApiResponse = itemApiLogicService.response(item).getData();
-//
-//                    itemBiderApiResponse.setItemApiResponse(itemApiResponse);
-//                    return itemBiderApiResponse;
-//                })
-//                .collect(Collectors.toList());
-//
-//        userApiResponse.setItemBiderApiResponseList(itemBiderApiResponseList);
-//
-//        UserItemBiderApiResponse userItemBiderApiResponse = UserItemBiderApiResponse.builder()
-//                .userApiResponse(userApiResponse)
-//                .build();
-//
-//        return Header.OK(userItemBiderApiResponse);
-//    }
-//
-//    public Header<List<ItemBiderApiResponse>> searchItemBider(Pageable pageable, Long id) {
-//        User user = baseRepository.getOne(id);
-//
-//        Page<ItemBider> itemBiders = itemBiderRepository.findAll(pageable);
-//        List<ItemBiderApiResponse> itemBiderApiResponseList = itemBiders.stream()
-//                .filter(itemBider -> itemBider.getUser().equals(user))
-//                .map(itemBider -> {
-//                    ItemBiderApiResponse itemBiderApiResponse = itemBiderApiLogicService.response(itemBider).getData();
-//                    Item item = itemBider.getItem();
-//                    ItemApiResponse itemApiResponse = itemApiLogicService.response(item).getData();
-//
-//                    itemBiderApiResponse.setItemApiResponse(itemApiResponse);
-//                    return itemBiderApiResponse;
-//                })
-//                .collect(Collectors.toList());
-//
-//        Pagination pagination = Pagination.builder()
-//                .totalPages(itemBiders.getTotalPages())
-//                .totalElements(itemBiders.getTotalElements())
-//                .currentPage(itemBiders.getNumber())
-//                .currentElements(itemBiders.getNumberOfElements())
-//                .build();
-//
-//
-//        return Header.OK(itemBiderApiResponseList, pagination);
-//    }
-//
-//    public Header<List<FavoriteItemApiResponse>> searchFavoriteItem(Pageable pageable, Long id) {
-//        User user = baseRepository.getOne(id);
-//
-//        Page<FavoriteItem> favoriteItems = favoriteItemRepository.findAll(pageable);
-//        List<FavoriteItemApiResponse> favoriteItemApiResponsesList = favoriteItems.stream()
-//                .filter(favoriteItem -> favoriteItem.getUser().equals(user))
-//                .map(favoriteItem -> {
-//                    FavoriteItemApiResponse favoriteItemApiResponse = favoriteItemApiLogicService.response(favoriteItem).getData();
-//                    Item item = favoriteItem.getItem();
-//                    ItemApiResponse itemApiResponse = itemApiLogicService.response(item).getData();
-//
-//                    favoriteItemApiResponse.setItemApiResponse(itemApiResponse);
-//                    return favoriteItemApiResponse;
-//                })
-//                .collect(Collectors.toList());
-//
-//        Pagination pagination = Pagination.builder()
-//                .totalPages(favoriteItems.getTotalPages())
-//                .totalElements(favoriteItems.getTotalElements())
-//                .currentPage(favoriteItems.getNumber())
-//                .currentElements(favoriteItems.getNumberOfElements())
-//                .build();
-//
-//        return Header.OK(favoriteItemApiResponsesList, pagination);
-//    }
-//
-
-
 }
 
 

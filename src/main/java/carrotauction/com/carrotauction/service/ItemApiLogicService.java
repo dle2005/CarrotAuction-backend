@@ -1,6 +1,9 @@
 package carrotauction.com.carrotauction.service;
 
-import carrotauction.com.carrotauction.model.entity.*;
+import carrotauction.com.carrotauction.model.entity.Category;
+import carrotauction.com.carrotauction.model.entity.Item;
+import carrotauction.com.carrotauction.model.entity.ItemImage;
+import carrotauction.com.carrotauction.model.entity.User;
 import carrotauction.com.carrotauction.network.Header;
 import carrotauction.com.carrotauction.network.Pagination;
 import carrotauction.com.carrotauction.network.request.ItemApiRequest;
@@ -9,18 +12,15 @@ import carrotauction.com.carrotauction.network.response.ItemDetailApiResponse;
 import carrotauction.com.carrotauction.network.response.ItemImageApiResponse;
 import carrotauction.com.carrotauction.repository.CategoryRepository;
 import carrotauction.com.carrotauction.repository.ItemImageRepository;
-import carrotauction.com.carrotauction.repository.ItemRepository;
 import carrotauction.com.carrotauction.repository.UserRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
-
-    @Autowired
-    private ItemRepository itemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,8 +44,6 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
     @Autowired
     HttpSession session;
-
-    private S3Service s3Service;
 
     @Override
     public Header<List<ItemApiResponse>> search(Pageable pageable) {
@@ -71,7 +66,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) throws IOException {
 //        User user = userRepository.getOne(((User) session.getAttribute("user")).getId());
-        User user = userRepository.getOne(1L);
+        User user = userRepository.getOne(15L);
 
         ItemApiRequest itemApiRequest = request.getData();
 
@@ -89,16 +84,14 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .start_price(itemApiRequest.getStart_price())
                 .duration(LocalDateTime.now().plusDays(itemApiRequest.getDuration()))
                 .categoryId(newCategory.getId())
+                .itemImages(new ArrayList<>())
                 .status("판매중")
                 .user(user)
                 .build();
 
         Item newItem = baseRepository.save(item);
 
-        System.out.println(itemApiRequest.getUrl().size());
-
         if (itemApiRequest.getUrl() != null) {
-            System.out.println("test");
             List<String> url = itemApiRequest.getUrl();
             for (int i = 0; i < url.size(); i++) {
                 ItemImage itemImage = ItemImage.builder()
@@ -222,12 +215,15 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
         for (int i = 0; i < item.getItemImages().size(); i++)
             url.add(item.getItemImages().get(0).getUrl());
 
+        long cur_price = item.getStart_price();
+        if (item.getItemBiderList().size() > 0) cur_price = item.getItemBiderList().get(0).getPrice();
+
         ItemDetailApiResponse itemDetailApiResponse = ItemDetailApiResponse.builder()
                 .title(item.getTitle())
                 .description(item.getDescription())
                 .category(categoryRepository.getOne(item.getCategoryId()).getCategory())
                 .start_price(item.getStart_price())
-                .current_price(item.getItemBiderList().get(0).getPrice())
+                .current_price(cur_price)
                 .duration(item.getDuration())
                 .item_id(item.getId())
                 .user_id(item.getUser().getId())

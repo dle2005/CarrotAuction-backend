@@ -11,11 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ItemBiderApiRequest {
 
-    private Long id;
-
     private Long price;
 
-    private Long userId;
-
     private Long itemId;
+
+    private Long seller;
 }

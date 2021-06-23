@@ -21,12 +21,12 @@ public class GalleryController {
     @PostMapping("/gallery")
     public String execWrite(MultipartFile file) throws IOException {
         String file_path = s3Service.upload(file);
-        System.out.println(file_path);
-        ItemImage itemImage = ItemImage.builder()
-                .url(file_path)
-                .item(itemRepository.getOne(1L))
-                .build();
-        itemImageRepository.save(itemImage);
+//        System.out.println(file_path);
+//        ItemImage itemImage = ItemImage.builder()
+//                .url(file_path)
+//                .item(itemRepository.getOne(1L))
+//                .build();
+//        itemImageRepository.save(itemImage);
         return file_path;
     }
 }
